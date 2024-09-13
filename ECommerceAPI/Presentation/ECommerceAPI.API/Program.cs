@@ -1,11 +1,26 @@
+using ECommerceAPI.Application.Validators.Products;
 using ECommerceAPI.Persistence;
 using ECommerceAPI.Persistence.Contexts;
+using ECommerceAPI.Infrastructure.Filters;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//Validations!
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true; // ModelState otomatik doğrulama davranışını devre dışı bırakır
+});
+
 builder.Services.AddPersistenceServices();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>());
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => 
     policy.WithOrigins("http://localhost:4200", "https://localhost:4200") // Sonundaki eğik çizgi yok
           .AllowAnyHeader()
