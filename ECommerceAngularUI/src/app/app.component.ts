@@ -12,3 +12,6 @@ declare var $: any
 export class AppComponent{
   
 }
+
+$.get("http://localhost:5059/api/products")
+

@@ -23,6 +23,7 @@
     "alertifyjs": "^1.14.0",
     "boostrap": "^2.0.0",
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
     "jquery": "^3.7.1",
     "ngx-spinner": "^17.0.0",
     "ngx-toastr": "^19.0.0",
