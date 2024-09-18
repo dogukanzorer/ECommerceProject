@@ -1,15 +1,19 @@
-   ECommerce Project
-1. Backend (C# .NET API)
+   # projeyi Run Etme
+   # ./run.sh
+   
+   
+     ECommerce Project
+  # Backend (C# .NET API)
     cd Backend/Presentation/ECommerce.API/API
     dotnet restore
     dotnet run
      
-2. Frontend (Angular)
+ # Frontend (Angular)
    cd AngularUI
    npm install
    ng serve
 
-ECommerceProject
+# ECommerceProject
 
 ○     Backend(C#)    ○
   Tracing Mechanism
