@@ -11,38 +11,45 @@ namespace ECommerceAPI.Persistence.Contexts
 {
     public class ECommerceAPIDbContext : DbContext
     {
-        public ECommerceAPIDbContext(DbContextOptions options) :base(options) 
+        public ECommerceAPIDbContext(DbContextOptions<ECommerceAPIDbContext> options) : base(options) 
         {
-            
         }
 
-       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=ECommerceDB;User Id=postgres;Password=2508;");
         }
+
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Customer> Customers { get; set; }
 
-
-        //Interceptor
+        // Interceptor
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            // ChangeTracker : Entityler üzerinden yapılan değişikliklerin yada yeni eklenen verinin yakalanmasını sağlayan property.Update operasyonlarında Track edilen verileri yakalayıp elde etmemizi sağlar.
             var datas = ChangeTracker.Entries<BaseEntity>();
             foreach (var data in datas)
             {
-                _ = data.State switch
+                switch (data.State)
                 {
-                    EntityState.Added => data.Entity.CreateDate = DateTime.UtcNow,
-                    EntityState.Modified => data.Entity.UpdateDate = DateTime.UtcNow,
-                    EntityState.Unchanged => data.Entity.UpdateDate, // Değişiklik yoksa bir işlem yapma
-                    _ => throw new ArgumentOutOfRangeException() // Diğer durumlar için bir hata fırlat
-                };
+                    case EntityState.Added:
+                        data.Entity.CreateDate = DateTime.UtcNow;
+                        break;
+                    case EntityState.Modified:
+                        data.Entity.UpdateDate = DateTime.UtcNow;
+                        break;
+                    case EntityState.Deleted:
+                        // Opsiyonel: Silinen bir entity için özel bir işlem yapılabilir.
+                        break;
+                    case EntityState.Unchanged:
+                        // Değişiklik yoksa bir işlem yapılmaz.
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(); // Bilinmeyen durumlar için bir hata fırlat.
+                }
             }
 
             return await base.SaveChangesAsync(cancellationToken);
         }
     }
-    
 }

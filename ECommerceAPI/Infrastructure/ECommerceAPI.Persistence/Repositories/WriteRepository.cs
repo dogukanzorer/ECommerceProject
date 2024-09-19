@@ -37,16 +37,32 @@ namespace ECommerceAPI.Persistence.Repositories
 
         public bool Remove(T model)
         {
-           EntityEntry<T> entityEntry = Table.Remove(model);
-           return entityEntry.State == EntityState.Deleted;
+            if (model == null) throw new ArgumentNullException(nameof(model));
+            EntityEntry<T> entityEntry = Table.Remove(model);
+            return entityEntry.State == EntityState.Deleted;
         }
 
+
+
+        // Remove Async
         public async Task<bool> RemoveAsync(string id)
+     {
+         try
+    {
+        T? model = await Table.FirstOrDefaultAsync(data => data.Id == Guid.Parse(id));
+        if (model == null) 
         {
-           T model = await Table.FirstOrDefaultAsync(data => data.Id == Guid.Parse(id));
-           return Remove(model);
-           
+            // Loglama veya uygun bir hata işleme
+            return false;
         }
+        return Remove(model);
+    }
+    catch (Exception ex)
+    {
+        // Hata yönetimi
+        throw new InvalidOperationException("Bir hata oluştu.", ex);
+    }
+}
 
         public bool Update(T model)
         {
