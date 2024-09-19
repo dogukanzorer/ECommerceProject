@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Attention!!</h2>
+<mat-dialog-content>
+  <p>Are you sure you want to delete?</p>
+  
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="close()">İptal</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

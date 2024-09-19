@@ -11,6 +11,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DeleteDirective } from '../../../directives/admin/delete.directive';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DeleteDailogComponent } from '../../../dialogs/delete-dailog/delete-dailog.component';
+
 
 
 
@@ -22,14 +25,14 @@ import { DeleteDirective } from '../../../directives/admin/delete.directive';
   declarations: [
     ProductsComponent,
     CreateComponent,
-    ListComponent,DeleteDirective
+    ListComponent,DeleteDirective,DeleteDailogComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild([
       { path:"",component:ProductsComponent  }
       ]),
-      MatSidenavModule,MatFormFieldModule,MatInputModule,MatButtonModule,MatTableModule,MatPaginatorModule
+      MatSidenavModule,MatFormFieldModule,MatInputModule,MatButtonModule,MatTableModule,MatPaginatorModule,MatDialogModule
   ]
 })
 export class ProductsModule { }
